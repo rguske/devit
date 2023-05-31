@@ -1,7 +1,7 @@
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
-  name: kn-py-asop-webhook
+  name: kn-py-asop-webhook-sink
   labels:
     app: veba-ui
 spec:
@@ -12,7 +12,7 @@ spec:
         autoscaling.knative.dev/minScale: "1"
     spec:
       containers:
-        - image: projects.registry.vmware.com/tanzu_ese_poc/kn-py-asop:1.1
+        - image: projects.registry.vmware.com/tanzu_ese_poc/kn-py-asop-webhook-sink:1.0
           imagePullPolicy: IfNotPresent
           env:
             - name: ADDRESS
