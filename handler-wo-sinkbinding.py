@@ -2,8 +2,6 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-SINKBINDING_ENDPOINT = "http://rabbitmq-broker-broker-ingress.vmware-functions.svc.cluster.local"
-
 @app.route('/webhook', methods=['POST'])
 def webhook():
     # Receive the JSON payload
@@ -36,16 +34,19 @@ def webhook():
             }
         }
 
+#       REORDERING DOES NOT WORK!
+#        # Rearrange the fields to match the desired order
+#        ordered_cloud_event = {
+#            "specversion": cloud_event["specversion"],
+#            "type": cloud_event["type"],
+#            "source": cloud_event["source"],
+#            "id": cloud_event["id"],
+#            "time": cloud_event["time"],
+#            "data": cloud_event["data"]
+#        }
+
         # Return the transformed payload
         return jsonify(cloud_event), 200
-
-        # Send the CloudEvent payload to SinkBinding
-        response = requests.post(SINKBINDING_ENDPOINT, json=cloud_event)
-
-        if response.status_code == 200:
-            return jsonify({"message": "CloudEvent payload sent to SinkBinding"}), 200
-        else:
-            return jsonify({"error": "Failed to send CloudEvent payload to SinkBinding"}), 500
 
     except KeyError as e:
         error_message = f"Missing required field: {str(e)}"
