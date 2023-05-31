@@ -1,0 +1,17 @@
+{
+  "action": "disc-from-switch",
+  "target": {
+    "device": {
+      "hostname": "<vc_vm_name>"
+    }
+  },
+  "actuator": {
+    "veba": {
+      "hostname": "veba.vmware.com"
+    }
+  },
+  "args": {
+    "logical-switch-name": "<vc_l2_switch_name>"
+  },
+  "command_id": "0866ff41-0d90-4003-a0a6-06b4c0d16cfa"
+}
