@@ -1,7 +1,7 @@
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
-  name: kn-py-echo
+  name: kn-pcli-tag
   labels:
     app: veba-ui
 spec:
@@ -12,22 +12,27 @@ spec:
         autoscaling.knative.dev/minScale: "1"
     spec:
       containers:
-        - image: us.gcr.io/daisy-284300/veba/kn-py-echo:1.2
+        - image: us.gcr.io/daisy-284300/veba/kn-pcli-tag:1.4
+          envFrom:
+            - secretRef:
+                name: tag-secret
+          env:
+            - name: FUNCTION_DEBUG
+              value: "false"
 ---
 apiVersion: eventing.knative.dev/v1
 kind: Trigger
 metadata:
-  name: veba-py-echo-trigger
+  name: veba-pcli-tag-trigger
   labels:
     app: veba-ui
 spec:
   broker: default
   filter:
     attributes:
-      type: com.vmware.event.router/event
-      subject: VmPoweredOffEvent
+      type: asop.openc2.event.disc-from-switch.v0
   subscriber:
     ref:
       apiVersion: serving.knative.dev/v1
       kind: Service
-      name: kn-py-echo
+      name: kn-pcli-tag
