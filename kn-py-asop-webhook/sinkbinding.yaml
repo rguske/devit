@@ -11,4 +11,4 @@ spec:
     ref:
       apiVersion: eventing.knative.dev/v1
       kind: Broker
-      name: example-broker
+      name: rabbitmq-broker

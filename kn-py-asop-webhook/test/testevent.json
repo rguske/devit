@@ -1,13 +1,13 @@
 {
-  "action": "disc-from-switch",
+  "action": "set-security-tag",
   "target": {
     "device": {
-      "hostname": "any-vm-1"
+      "hostname": "webserver01"
     }
   },
   "actuator": {
     "veba": {
-      "hostname": "veba.vmware.com"
+      "hostname": "asop-eventing-system.vmware.com"
     }
   },
   "args": {

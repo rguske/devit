@@ -23,7 +23,7 @@ kind: Trigger
 metadata:
   name: kn-ps-asop-slack-trigger
 spec:
-  broker: example-broker
+  broker: rabbitmq-broker
   filter:
     attributes:
       type: asop.openc2.event.disc-from-switch.v0

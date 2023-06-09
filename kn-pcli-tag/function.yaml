@@ -12,7 +12,7 @@ spec:
         autoscaling.knative.dev/minScale: "1"
     spec:
       containers:
-        - image: us.gcr.io/daisy-284300/veba/kn-pcli-tag:1.4
+        - image: registry.cloud-garage.net/rguske/kn-ps-asop-tag@sha256:90a961c030ba5c7d881e3fc095b89134881340e4e7b62406724876096a6eff8a
           envFrom:
             - secretRef:
                 name: tag-secret
@@ -27,7 +27,7 @@ metadata:
   labels:
     app: veba-ui
 spec:
-  broker: default
+  broker: rabbitmq-broker
   filter:
     attributes:
       type: asop.openc2.event.disc-from-switch.v0
