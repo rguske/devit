@@ -80,7 +80,7 @@ Function Process-Handler {
    $VCENTER_TAG_NAME = ${jsonSecrets}.VCENTER_TAG_NAME
 
    # Extract VM Name from event
-   $vmName = $cloudEventData.Vm.Name
+   $vmName = $cloudEventData.target.device.hostname
 
    Write-Host "$(Get-Date) - Applying vSphere Tag `"$VCENTER_TAG_NAME`" to $vmName ...`n"
    try {
