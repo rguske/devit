@@ -26,7 +26,7 @@ spec:
   broker: rabbitmq-broker
   filter:
     attributes:
-      type: asop.openc2.event.disc-from-switch.v0
+      type: asop.openc2.event.set-security-tag.v0
   subscriber:
     ref:
       apiVersion: serving.knative.dev/v1

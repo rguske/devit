@@ -1,0 +1,50 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: kn-asop-go-tagging
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/maxScale: "1"
+        autoscaling.knative.dev/minScale: "1"
+    spec:
+      containers:
+        - image: us.gcr.io/daisy-284300/veba/kn-go-tagging:1.1
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: VCENTER_INSECURE
+              value: "true"
+            - name: VCENTER_URL
+              value: "https://vcsa.cpod-nsxv8.az-stc.cloud-garage.net"
+            # - name: VCENTER_SECRET_PATH
+            #   value: "/var/bindings/vsphere"
+            - name: DEBUG
+              value: "true"
+            - name: TAG_NAME
+              value: "asop-security-operation"
+            - name: TAG_ACTION
+              value: "attach" # can be "attach" or "detach"
+          volumeMounts:
+            - name: credentials
+              mountPath: /var/bindings/vsphere
+              readOnly: true
+      volumes:
+        - name: credentials
+          secret:
+            secretName: vsphere-write-credentials
+---
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  name: kn-asop-go-tagging-trigger
+spec:
+  broker: rabbitmq-broker
+  filter:
+    attributes:
+      type: asop.openc2.event.set-security-tag.v0
+  subscriber:
+    ref:
+      apiVersion: v1
+      kind: Service
+      name: kn-asop-go-tagging
