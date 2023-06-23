@@ -1,9 +1,7 @@
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
-  name: kn-pcli-tag
-  labels:
-    app: veba-ui
+  name: kn-asop-pcli-tag
 spec:
   template:
     metadata:
@@ -12,7 +10,7 @@ spec:
         autoscaling.knative.dev/minScale: "1"
     spec:
       containers:
-        - image: us.gcr.io/daisy-284300/veba/kn-pcli-tag:1.4
+        - image: registry.cloud-garage.net/rguske/kn-ps-asop-tag@sha256:90a961c030ba5c7d881e3fc095b89134881340e4e7b62406724876096a6eff8a
           envFrom:
             - secretRef:
                 name: tag-secret
@@ -23,16 +21,14 @@ spec:
 apiVersion: eventing.knative.dev/v1
 kind: Trigger
 metadata:
-  name: veba-pcli-tag-trigger
-  labels:
-    app: veba-ui
+  name: kn-asop-pcli-tag-trigger
 spec:
-  broker: default
+  broker: rabbitmq-broker
   filter:
     attributes:
-      type: asop.openc2.event.disc-from-switch.v0
+      type: asop.openc2.event.set-security-tag.v0
   subscriber:
     ref:
       apiVersion: serving.knative.dev/v1
       kind: Service
-      name: kn-pcli-tag
+      name: kn-asop-pcli-tag
